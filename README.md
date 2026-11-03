@@ -34,15 +34,15 @@ The application provides a secure CRM workspace for managing customer relationsh
 
 The application is organized into:
 
-- `Controllers/` — MVC controllers and API controllers
-- `Models/` — EF Core entities
-- `ViewModels/` — MVC form, list, dashboard, report, and user-management models
-- `Data/` — `ApplicationDbContext` and EF Core migrations
-- `Services/` — API services, Identity seeding, and application services
-- `Security/` — role names and authorization policies
-- `Views/` — Bootstrap-based MVC views
-- `Areas/Identity/` — Identity login, registration, and access-denied pages
-- `wwwroot/` — CSS, JavaScript, Bootstrap, jQuery, validation libraries, and Chart.js assets
+- `Controllers/` - MVC controllers and API controllers
+- `Models/` - EF Core entities
+- `ViewModels/` - MVC form, list, dashboard, report, and user-management models
+- `Data/` - `ApplicationDbContext` and EF Core migrations
+- `Services/` - API services, Identity seeding, and application services
+- `Security/` - role names and authorization policies
+- `Views/` -Bootstrap-based MVC views
+- `Areas/Identity/` - Identity login, registration, and access-denied pages
+- `wwwroot/` - CSS, JavaScript, Bootstrap, jQuery, validation libraries, and Chart.js assets
 
 ## Prerequisites
 
