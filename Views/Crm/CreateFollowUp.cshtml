@@ -1,0 +1,4 @@
+@model AcxiomCRM.ViewModels.FollowUpFormViewModel
+@{ ViewData["Title"] = "Create Follow-up"; }
+<div class="card shadow-sm border-0"><div class="card-body"><h1 class="h3 mb-4">Create follow-up</h1><form asp-action="CreateFollowUp" method="post"><partial name="_FollowUpForm" model="Model" /><div class="mt-4"><button class="btn btn-primary" type="submit">Save follow-up</button> <a asp-action="FollowUps" class="btn btn-outline-secondary">Cancel</a></div></form></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

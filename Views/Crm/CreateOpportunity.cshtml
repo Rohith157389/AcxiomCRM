@@ -1,0 +1,4 @@
+@model AcxiomCRM.ViewModels.OpportunityFormViewModel
+@{ ViewData["Title"] = "Create Opportunity"; }
+<div class="card shadow-sm border-0"><div class="card-body"><h1 class="h3 mb-4">Create opportunity</h1><form asp-action="CreateOpportunity" method="post"><partial name="_OpportunityForm" model="Model" /><div class="mt-4"><button class="btn btn-primary" type="submit">Save opportunity</button> <a asp-action="Opportunities" class="btn btn-outline-secondary">Cancel</a></div></form></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

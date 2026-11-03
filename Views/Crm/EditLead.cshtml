@@ -1,0 +1,3 @@
+@model AcxiomCRM.ViewModels.LeadFormViewModel
+@{ ViewData["Title"] = "Edit Lead"; }<div class="card shadow-sm border-0"><div class="card-body"><h1 class="h3 mb-4">Edit lead</h1><form asp-action="EditLead" asp-route-id="@Model.LeadId" method="post"><input asp-for="LeadId" type="hidden" /><partial name="_LeadForm" model="Model" /><div class="mt-4"><button class="btn btn-primary" type="submit">Save changes</button> <a asp-action="LeadDetails" asp-route-id="@Model.LeadId" class="btn btn-outline-secondary">Cancel</a></div></form></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

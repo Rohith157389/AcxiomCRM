@@ -1,0 +1,13 @@
+@page
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@model AcxiomCRM.Areas.Identity.Pages.Account.AccessDeniedModel
+
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+<div class="py-5 text-center">
+    <h1 class="display-6">Access denied</h1>
+    <p class="lead text-secondary">Your account is authenticated but does not have permission to access this page.</p>
+    <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Return to dashboard</a>
+</div>

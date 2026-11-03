@@ -1,0 +1,21 @@
+@model AcxiomCRM.ViewModels.AuditLogListViewModel
+@{ ViewData["Title"] = "Audit Logs"; }
+<div class="mb-4"><h1 class="h2 mb-1">Audit logs</h1><p class="text-secondary mb-0">Read-only record of CRM and account changes.</p></div>
+<form method="get" asp-action="AuditLogs" class="card card-body shadow-sm border-0 mb-4"><div class="row g-3 align-items-end"><div class="col-md-3"><label class="form-label" for="search">Search user, action or entity</label><input class="form-control" id="search" name="search" value="@Model.Search" /></div><div class="col-md-2"><label class="form-label" for="auditAction">Action</label><select class="form-select" id="auditAction" name="auditAction"><option value="">All actions</option>@foreach (var item in Model.Actions) { <option value="@item" selected="@(Model.Action == item)">@item</option> }</select></div><div class="col-md-2"><label class="form-label" for="entityName">Entity</label><select class="form-select" id="entityName" name="entityName"><option value="">All entities</option>@foreach (var item in Model.Entities) { <option value="@item" selected="@(Model.EntityName == item)">@item</option> }</select></div><div class="col-md-2"><label class="form-label" for="fromDate">From</label><input class="form-control" id="fromDate" name="fromDate" type="date" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div><div class="col-md-2"><label class="form-label" for="toDate">To</label><input class="form-control" id="toDate" name="toDate" type="date" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div><div class="col-md-1"><button class="btn btn-outline-primary" type="submit">Filter</button></div></div></form>
+<div class="card shadow-sm border-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Entity</th><th>Record</th><th>IP address</th><th></th></tr></thead><tbody>
+@if (Model.AuditLogs.Count == 0)
+{
+    <tr><td colspan="7" class="text-center text-secondary py-5">No audit entries found.</td></tr>
+}
+else
+{
+    foreach (var log in Model.AuditLogs)
+    {
+        <tr><td>@log.CreatedDate.ToLocalTime().ToString("g")</td><td>@log.UserName</td><td><span class="badge text-bg-light border">@log.Action</span></td><td>@log.EntityName</td><td>@log.RecordId</td><td>@log.IpAddress</td><td class="text-end"><a asp-action="AuditLogDetails" asp-route-id="@log.AuditLogId" class="btn btn-sm btn-outline-secondary">View</a></td></tr>
+    }
+}
+</tbody></table></div></div>
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4"><ul class="pagination justify-content-center">@for (var p = 1; p <= Model.TotalPages; p++) { <li class="page-item @(p == Model.Page ? "active" : "")"><a class="page-link" asp-action="AuditLogs" asp-route-page="@p" asp-route-search="@Model.Search" asp-route-auditAction="@Model.Action" asp-route-entityName="@Model.EntityName" asp-route-fromDate="@Model.FromDate?.ToString("yyyy-MM-dd")" asp-route-toDate="@Model.ToDate?.ToString("yyyy-MM-dd")">@p</a></li> }</ul></nav>
+}

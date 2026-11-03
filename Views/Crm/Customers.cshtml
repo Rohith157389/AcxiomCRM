@@ -1,0 +1,125 @@
+@model AcxiomCRM.ViewModels.CustomerListViewModel
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Customers</h1>
+        <p class="text-secondary mb-0">Manage customer relationships within your permitted ownership scope.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Add customer</a>
+</div>
+
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="alert alert-success" role="alert">@successMessage</div>
+}
+@if (TempData["ErrorMessage"] is string errorMessage)
+{
+    <div class="alert alert-danger" role="alert">@errorMessage</div>
+}
+
+<form method="get" asp-action="Customers" class="card card-body shadow-sm border-0 mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-12 col-lg-5">
+            <label class="form-label" for="search">Search</label>
+            <input class="form-control" id="search" name="search" value="@Model.Search" placeholder="Name, email, phone or company" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" id="status" name="status">
+                <option value="">All statuses</option>
+                @foreach (var item in Model.Statuses)
+                {
+                    <option value="@item" selected="@(Model.Status == item)">@item</option>
+                }
+            </select>
+        </div>
+        @if (Model.CanFilterByOwner)
+        {
+            <div class="col-12 col-md-4 col-lg-3">
+                <label class="form-label" for="ownerId">Owner</label>
+                <select class="form-select" id="ownerId" name="ownerId">
+                    <option value="">All owners</option>
+                    @foreach (var owner in Model.Owners)
+                    {
+                        <option value="@owner.Id" selected="@(Model.OwnerId == owner.Id)">@owner.DisplayName</option>
+                    }
+                </select>
+            </div>
+        }
+        <div class="col-12 col-md-4 col-lg-2 d-flex gap-2">
+            <button class="btn btn-outline-primary flex-grow-1" type="submit">Filter</button>
+            <a class="btn btn-outline-secondary" asp-action="Customers" title="Clear filters">Clear</a>
+        </div>
+    </div>
+</form>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Code</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Customers.Count == 0)
+            {
+                <tr><td colspan="6" class="text-center text-secondary py-5">No customers match the current filters.</td></tr>
+            }
+            else
+            {
+                @foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td class="fw-semibold">@customer.CustomerCode</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@customer.CustomerId" class="text-decoration-none fw-semibold">@customer.CustomerName</a>
+                            @if (!string.IsNullOrWhiteSpace(customer.CompanyName))
+                            {
+                                <div class="small text-secondary">@customer.CompanyName</div>
+                            }
+                        </td>
+                        <td>
+                            <div>@customer.Email</div>
+                            @if (!string.IsNullOrWhiteSpace(customer.Phone))
+                            {
+                                <div class="small text-secondary">@customer.Phone</div>
+                            }
+                        </td>
+                        <td><span class="badge text-bg-light border">@customer.Status</span></td>
+                        <td>@customer.OwnerName</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@customer.CustomerId" class="btn btn-sm btn-outline-secondary">View</a>
+                            <a asp-action="Edit" asp-route-id="@customer.CustomerId" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@customer.CustomerId" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4" aria-label="Customer pages">
+        <ul class="pagination justify-content-center">
+            @for (var page = 1; page <= Model.TotalPages; page++)
+            {
+                <li class="page-item @(page == Model.Page ? "active" : string.Empty)">
+                    <a class="page-link" asp-action="Customers" asp-route-page="@(page)" asp-route-search="@Model.Search" asp-route-status="@Model.Status" asp-route-ownerId="@Model.OwnerId">@(page)</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

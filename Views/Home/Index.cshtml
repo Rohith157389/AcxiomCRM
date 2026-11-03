@@ -1,0 +1,40 @@
+@model AcxiomCRM.ViewModels.HomeViewModel
+@using System.Text.Json
+@using AcxiomCRM.ViewModels
+@{
+    ViewData["Title"] = "Dashboard";
+    var k = Model.Kpis;
+}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div><span class="text-uppercase text-primary fw-semibold small">@Model.ApplicationName</span><h1 class="h2 mt-2 mb-1">Dashboard</h1><p class="text-secondary mb-0">Authorized CRM performance overview.</p></div>
+    <form method="get" class="row g-2 align-items-end">
+        <div><label class="form-label small" for="filter">Date range</label><select class="form-select" id="filter" name="filter"><option value="Today" selected="@(Model.DateFilter == DashboardDateFilter.Today)">Today</option><option value="Last7Days" selected="@(Model.DateFilter == DashboardDateFilter.Last7Days)">Last 7 days</option><option value="Last30Days" selected="@(Model.DateFilter == DashboardDateFilter.Last30Days)">Last 30 days</option><option value="ThisMonth" selected="@(Model.DateFilter == DashboardDateFilter.ThisMonth)">This month</option><option value="ThisYear" selected="@(Model.DateFilter == DashboardDateFilter.ThisYear)">This year</option><option value="Custom" selected="@(Model.DateFilter == DashboardDateFilter.Custom)">Custom</option></select></div>
+        <div><label class="form-label small" for="fromDate">From</label><input class="form-control" type="date" id="fromDate" name="fromDate" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div><label class="form-label small" for="toDate">To</label><input class="form-control" type="date" id="toDate" name="toDate" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" /></div>
+        <div><button class="btn btn-primary" type="submit">Apply</button></div>
+    </form>
+</div>
+@if (Model.ValidationError is not null) { <div class="alert alert-danger">@Model.ValidationError</div> }
+<div class="row g-3 mb-4">
+    @foreach (var card in new[] { ("Total Customers", k.TotalCustomers.ToString(), "primary"), ("Total Leads", k.TotalLeads.ToString(), "info"), ("Open Leads", k.OpenLeads.ToString(), "warning"), ("Total Opportunities", k.TotalOpportunities.ToString(), "primary"), ("Open Opportunities", k.OpenOpportunities.ToString(), "warning"), ("Won Opportunities", k.WonOpportunities.ToString(), "success"), ("Lost Opportunities", k.LostOpportunities.ToString(), "danger"), ("Total Pipeline Value", k.TotalPipelineValue.ToString("C"), "success") })
+    { <div class="col-6 col-xl-3"><div class="card h-100 border-0 shadow-sm"><div class="card-body border-start border-4 border-@card.Item3"><div class="text-secondary small">@card.Item1</div><div class="fs-4 fw-semibold">@card.Item2</div></div></div></div> }
+</div>
+<p class="text-secondary small mb-4">Weighted pipeline value for active opportunities: <strong>@k.WeightedPipelineValue.ToString("C")</strong> (amount × probability ÷ 100).</p>
+<div class="row g-4">
+    <div class="col-lg-6"><div class="card border-0 shadow-sm h-100"><div class="card-body"><h2 class="h5">Lead status</h2><div style="height:280px"><canvas id="leadStatusChart"></canvas></div></div></div></div>
+    <div class="col-lg-6"><div class="card border-0 shadow-sm h-100"><div class="card-body"><h2 class="h5">Opportunity pipeline</h2><div style="height:280px"><canvas id="opportunityStageChart"></canvas></div></div></div></div>
+    <div class="col-12"><div class="card border-0 shadow-sm"><div class="card-body"><h2 class="h5">Monthly won sales</h2><p class="text-secondary small">Won opportunity amounts grouped by expected close month.</p><div style="height:300px"><canvas id="monthlySalesChart"></canvas></div></div></div></div>
+</div>
+@section Scripts {
+<script>
+const leadLabels = @Html.Raw(JsonSerializer.Serialize(Model.LeadStatusChart.Labels));
+const leadValues = @Html.Raw(JsonSerializer.Serialize(Model.LeadStatusChart.Values));
+const stageLabels = @Html.Raw(JsonSerializer.Serialize(Model.OpportunityStageChart.Labels));
+const stageValues = @Html.Raw(JsonSerializer.Serialize(Model.OpportunityStageChart.Values));
+const salesLabels = @Html.Raw(JsonSerializer.Serialize(Model.MonthlySalesChart.Labels));
+const salesValues = @Html.Raw(JsonSerializer.Serialize(Model.MonthlySalesChart.Values));
+new Chart(document.getElementById('leadStatusChart'), { type: 'bar', data: { labels: leadLabels, datasets: [{ label: 'Leads', data: leadValues, backgroundColor: '#0d6efd' }] }, options: { responsive: true, maintainAspectRatio: false } });
+new Chart(document.getElementById('opportunityStageChart'), { type: 'doughnut', data: { labels: stageLabels, datasets: [{ label: 'Opportunities', data: stageValues, backgroundColor: ['#6c757d','#0d6efd','#ffc107','#198754','#dc3545'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+new Chart(document.getElementById('monthlySalesChart'), { type: 'line', data: { labels: salesLabels, datasets: [{ label: 'Won sales', data: salesValues, borderColor: '#198754', backgroundColor: 'rgba(25,135,84,.15)', fill: true, tension: .25 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } } });
+</script>
+}

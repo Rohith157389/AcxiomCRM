@@ -1,0 +1,145 @@
+@baseUrl = http://127.0.0.1:5081
+
+### Customers - list (requires an authenticated Identity cookie)
+GET {{baseUrl}}/api/customers?page=1&pageSize=20
+
+### Customers - search
+GET {{baseUrl}}/api/customers?search=acme&status=Active
+
+### Customers - details
+GET {{baseUrl}}/api/customers/1
+
+### Customers - create
+POST {{baseUrl}}/api/customers
+Content-Type: application/json
+
+{
+  "customerCode": "API-CUST-001",
+  "customerName": "API Customer",
+  "email": "api.customer@example.com",
+  "phone": "+1 555 010 2000",
+  "companyName": "API Example Ltd",
+  "status": "Active"
+}
+
+### Customers - update
+PUT {{baseUrl}}/api/customers/1
+Content-Type: application/json
+
+{
+  "customerCode": "API-CUST-001",
+  "customerName": "Updated API Customer",
+  "email": "api.customer@example.com",
+  "status": "Active"
+}
+
+### Customers - delete
+DELETE {{baseUrl}}/api/customers/1
+
+### Leads - list
+GET {{baseUrl}}/api/leads?status=New&page=1&pageSize=20
+
+### Leads - details
+GET {{baseUrl}}/api/leads/1
+
+### Leads - create
+POST {{baseUrl}}/api/leads
+Content-Type: application/json
+
+{
+  "leadCode": "API-LEAD-001",
+  "leadName": "API Lead",
+  "email": "api.lead@example.com",
+  "source": "Website",
+  "status": "New",
+  "expectedValue": 2500
+}
+
+### Leads - update
+PUT {{baseUrl}}/api/leads/1
+Content-Type: application/json
+
+{
+  "leadCode": "API-LEAD-001",
+  "leadName": "Updated API Lead",
+  "email": "api.lead@example.com",
+  "source": "Website",
+  "status": "Contacted",
+  "expectedValue": 3000
+}
+
+### Leads - delete
+DELETE {{baseUrl}}/api/leads/1
+
+### Opportunities - list
+GET {{baseUrl}}/api/opportunities?stage=Qualification&status=Open
+
+### Opportunities - details
+GET {{baseUrl}}/api/opportunities/1
+
+### Opportunities - create
+POST {{baseUrl}}/api/opportunities
+Content-Type: application/json
+
+{
+  "opportunityName": "API Opportunity",
+  "customerId": 1,
+  "amount": 10000,
+  "stage": "Qualification",
+  "probability": 25,
+  "expectedCloseDate": "2026-12-15T00:00:00+00:00",
+  "status": "Open"
+}
+
+### Opportunities - update
+PUT {{baseUrl}}/api/opportunities/1
+Content-Type: application/json
+
+{
+  "opportunityName": "Updated API Opportunity",
+  "customerId": 1,
+  "amount": 12000,
+  "stage": "Proposal",
+  "probability": 50,
+  "expectedCloseDate": "2026-12-20T00:00:00+00:00",
+  "status": "Open"
+}
+
+### Opportunities - delete
+DELETE {{baseUrl}}/api/opportunities/1
+
+### Follow-ups - list
+GET {{baseUrl}}/api/follow-ups?status=Planned
+
+### Follow-ups - details
+GET {{baseUrl}}/api/follow-ups/1
+
+### Follow-ups - create
+POST {{baseUrl}}/api/follow-ups
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "followUpDate": "2026-12-01T10:00:00+00:00",
+  "followUpType": "Call",
+  "remarks": "API follow-up",
+  "status": "Planned"
+}
+
+### Follow-ups - update
+PUT {{baseUrl}}/api/follow-ups/1
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "followUpDate": "2026-12-02T10:00:00+00:00",
+  "followUpType": "Meeting",
+  "remarks": "Rescheduled API follow-up",
+  "status": "Planned"
+}
+
+### Follow-ups - delete
+DELETE {{baseUrl}}/api/follow-ups/1
+
+### Error path - nonexistent customer
+GET {{baseUrl}}/api/customers/999999

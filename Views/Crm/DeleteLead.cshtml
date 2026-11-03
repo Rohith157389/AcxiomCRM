@@ -1,0 +1,2 @@
+@model AcxiomCRM.ViewModels.LeadFormViewModel
+@{ ViewData["Title"] = "Delete Lead"; }<div class="card border-danger shadow-sm"><div class="card-body"><h1 class="h3 text-danger">Delete lead?</h1><p>This will permanently delete <strong>@Model.LeadName</strong> (@Model.LeadCode).</p><form asp-action="DeleteLead" asp-route-id="@Model.LeadId" method="post"><button class="btn btn-danger" type="submit">Delete lead</button> <a asp-action="LeadDetails" asp-route-id="@Model.LeadId" class="btn btn-outline-secondary">Cancel</a></form></div></div>

@@ -1,0 +1,34 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio and IDE files
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local SQLite databases and sidecar files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.*.local.json
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+TestResults/
+artifacts/
+

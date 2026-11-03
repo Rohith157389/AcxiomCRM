@@ -1,0 +1,4 @@
+@model AcxiomCRM.ViewModels.OpportunityFormViewModel
+@{ ViewData["Title"] = "Edit Opportunity"; }
+<div class="card shadow-sm border-0"><div class="card-body"><h1 class="h3 mb-4">Edit opportunity</h1><form asp-action="EditOpportunity" asp-route-id="@Model.OpportunityId" method="post"><input asp-for="OpportunityId" type="hidden" /><partial name="_OpportunityForm" model="Model" /><div class="mt-4"><button class="btn btn-primary" type="submit">Save changes</button> <a asp-action="OpportunityDetails" asp-route-id="@Model.OpportunityId" class="btn btn-outline-secondary">Cancel</a></div></form></div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

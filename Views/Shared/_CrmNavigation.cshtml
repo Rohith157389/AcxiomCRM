@@ -1,0 +1,19 @@
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
+    </li>
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Customers">Customers</a></li>
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Leads">Leads</a></li>
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Opportunities">Opportunities</a></li>
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="FollowUps">Follow-ups</a></li>
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Activities">Activities</a></li>
+
+    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Reports">Reports</a></li>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="Users">Users</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Crm" asp-action="AuditLogs">Audit Logs</a></li>
+    }
+}
